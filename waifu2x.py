@@ -123,40 +123,38 @@ def load_models(cfg):
             model.to_gpu()
     return models
 
-
-p = argparse.ArgumentParser(description='Chainer implementation of waifu2x')
-p.add_argument('--gpu', '-g', type=int, default=-1)
-p.add_argument('--input', '-i', default='images/small.png')
-p.add_argument('--output', '-o', default='./')
-p.add_argument('--extension', '-e', choices=['png', 'webp'], default='png')
-p.add_argument('--quality', '-q', type=int, default=None)
-p.add_argument('--arch', '-a',
-               choices=['VGG7', '0', 'UpConv7', '1',
-                        'ResNet10', '2', 'UpResNet10', '3'],
-               default='VGG7')
-p.add_argument('--model_dir', '-d', default=None)
-p.add_argument('--method', '-m', choices=['noise', 'scale', 'noise_scale'],
-               default='scale')
-p.add_argument('--scale_ratio', '-s', type=float, default=2.0)
-p.add_argument('--noise_level', '-n', type=int, choices=[0, 1, 2, 3],
-               default=1)
-p.add_argument('--color', '-c', choices=['y', 'rgb'], default='rgb')
-p.add_argument('--tta', '-t', action='store_true')
-p.add_argument('--tta_level', '-T', type=int, choices=[2, 4, 8], default=8)
-p.add_argument('--batch_size', '-b', type=int, default=16)
-p.add_argument('--block_size', '-l', type=int, default=128)
-g = p.add_mutually_exclusive_group()
-g.add_argument('--width', '-W', type=int, default=0)
-g.add_argument('--height', '-H', type=int, default=0)
-g.add_argument('--shorter_side', '-S', type=int, default=0)
-g.add_argument('--longer_side', '-L', type=int, default=0)
-
-args = p.parse_args()
-if args.arch in srcnn.table:
-    args.arch = srcnn.table[args.arch]
-
-
 if __name__ == '__main__':
+    p = argparse.ArgumentParser(description='Chainer implementation of waifu2x')
+    p.add_argument('--gpu', '-g', type=int, default=-1)
+    p.add_argument('--input', '-i', default='images/small.png')
+    p.add_argument('--output', '-o', default='./')
+    p.add_argument('--extension', '-e', choices=['png', 'webp'], default='png')
+    p.add_argument('--quality', '-q', type=int, default=None)
+    p.add_argument('--arch', '-a',
+                   choices=['VGG7', '0', 'UpConv7', '1',
+                            'ResNet10', '2', 'UpResNet10', '3'],
+                   default='VGG7')
+    p.add_argument('--model_dir', '-d', default=None)
+    p.add_argument('--method', '-m', choices=['noise', 'scale', 'noise_scale'],
+                   default='scale')
+    p.add_argument('--scale_ratio', '-s', type=float, default=2.0)
+    p.add_argument('--noise_level', '-n', type=int, choices=[0, 1, 2, 3],
+                   default=1)
+    p.add_argument('--color', '-c', choices=['y', 'rgb'], default='rgb')
+    p.add_argument('--tta', '-t', action='store_true')
+    p.add_argument('--tta_level', '-T', type=int, choices=[2, 4, 8], default=8)
+    p.add_argument('--batch_size', '-b', type=int, default=16)
+    p.add_argument('--block_size', '-l', type=int, default=128)
+    g = p.add_mutually_exclusive_group()
+    g.add_argument('--width', '-W', type=int, default=0)
+    g.add_argument('--height', '-H', type=int, default=0)
+    g.add_argument('--shorter_side', '-S', type=int, default=0)
+    g.add_argument('--longer_side', '-L', type=int, default=0)
+
+    args = p.parse_args()
+    if args.arch in srcnn.table:
+        args.arch = srcnn.table[args.arch]
+
     models = load_models(args)
 
     input_exts = ['.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff', '.webp']
